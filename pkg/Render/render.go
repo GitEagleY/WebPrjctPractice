@@ -22,7 +22,6 @@ func RenderTemplate(w http.ResponseWriter, templateName string) error {
 
 	}
 	//render template
-	templateToRender = templateCache[templateName]
 	templateToRender.Execute(w, nil)
 	return nil
 }

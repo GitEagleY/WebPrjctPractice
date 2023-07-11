@@ -1,13 +1,14 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
+
+	handlers "github.com/GitEagleY/WebPrjctPractice/pkg/Handlers"
+)
 
 const portnum = ":8080"
 
-func homeContent(w http.ResponseWriter, r *http.Request) {
-
-}
 func main() {
-	http.HandleFunc("/", homeContent)
+	http.HandleFunc("/", handlers.Home)
 	http.ListenAndServe(portnum, nil)
 }

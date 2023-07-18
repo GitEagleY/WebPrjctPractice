@@ -9,7 +9,7 @@ import (
 
 func RenderTemplate(w http.ResponseWriter, templateName string) error {
 	var err error
-	templateCache, err := cacheTemplate()
+	templateCache, err := CacheTemplate()
 	if err != nil {
 		log.Fatal(err)
 		return err
@@ -25,7 +25,7 @@ func RenderTemplate(w http.ResponseWriter, templateName string) error {
 	templateToRender.Execute(w, nil)
 	return nil
 }
-func cacheTemplate() (map[string]*template.Template, error) {
+func CacheTemplate() (map[string]*template.Template, error) {
 	Cache := map[string]*template.Template{}
 
 	// get all of the files named *.page.tmpl from ./templates

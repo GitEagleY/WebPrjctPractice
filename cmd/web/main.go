@@ -2,9 +2,10 @@ package main
 
 import (
 	"log"
-render	"github.com/GitEagleY/WebPrjctPractice/pkg/Render"
-	"github.com/GitEagleY/WebPrjctPractice/pkg/config"
 	"net/http"
+
+	render "github.com/GitEagleY/WebPrjctPractice/pkg/Render"
+	"github.com/GitEagleY/WebPrjctPractice/pkg/config"
 
 	handlers "github.com/GitEagleY/WebPrjctPractice/pkg/Handlers"
 )
@@ -12,14 +13,15 @@ render	"github.com/GitEagleY/WebPrjctPractice/pkg/Render"
 const portnum = ":8080"
 
 func main() {
-	
+
 	var app config.AppConfig
-	tc, err:= render.CacheTemplate()
-	if err!=nil{
+	tc, err := render.CacheTemplate()
+	if err != nil {
 		log.Fatal("cannot create template cache")
 	}
-	app.TemplateCache=tc
+	app.TemplateCache = tc
 
+	render.NewTemplates(&app)
 
 	http.HandleFunc("/", handlers.Home)
 	http.ListenAndServe(portnum, nil)

@@ -5,15 +5,20 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+
+	config "github.com/GitEagleY/WebPrjctPractice/pkg/config"
 )
 
+var functions = template.FuncMap{}
+var app *config.AppConfig
+
+func NewTemplates(a *config.AppConfig) {
+	app = a
+}
 func RenderTemplate(w http.ResponseWriter, templateName string) error {
-	var err error
-	templateCache, err := CacheTemplate()
-	if err != nil {
-		log.Fatal(err)
-		return err
-	}
+
+	templateCache := app.TemplateCache
+
 	//make template to render
 	templateToRender, ok := templateCache[templateName]
 

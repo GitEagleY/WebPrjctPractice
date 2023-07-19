@@ -9,23 +9,27 @@ import (
 	config "github.com/GitEagleY/WebPrjctPractice/pkg/config"
 )
 
-var functions = template.FuncMap{}
+//var functions = template.FuncMap{}
+
 var app *config.AppConfig
+var templateCache map[string]*template.Template
 
 func NewTemplates(a *config.AppConfig) {
 	app = a
 }
 func RenderTemplate(w http.ResponseWriter, templateName string) error {
-
-	templateCache := app.TemplateCache
+	if app.UseCache { //if not in developing mode use templates each time from cache
+		templateCache = app.TemplateCache
+	} else { //or if in development mode use from disk
+		templateCache, _ = CacheTemplate()
+	}
 
 	//make template to render
 	templateToRender, ok := templateCache[templateName]
-
 	if !ok {
 		log.Fatal(ok)
-
 	}
+
 	//render template
 	templateToRender.Execute(w, nil)
 	return nil
@@ -41,25 +45,25 @@ func CacheTemplate() (map[string]*template.Template, error) {
 
 	// range through all files ending with *.page.tmpl
 	for _, page := range pages {
-		name := filepath.Base(page)
-		tmplts, err := template.New(name).ParseFiles(page)
+		name := filepath.Base(page)                            //take page file name
+		parsdTmplt, err := template.New(name).ParseFiles(page) //allocating template and create template by parsing page file
 		if err != nil {
 			return Cache, err
 		}
-
+		// get all of the files named *.layout.tmpl from ./templates
 		matches, err := filepath.Glob("./templates/*.layout.tmpl")
 		if err != nil {
 			return Cache, err
 		}
 
 		if len(matches) > 0 {
-			tmplts, err = tmplts.ParseGlob("./templates/*.layout.tmpl")
+			parsdTmplt, err = parsdTmplt.ParseGlob("./templates/*.layout.tmpl")
 			if err != nil {
 				return Cache, err
 			}
 		}
 
-		Cache[name] = tmplts
+		Cache[name] = parsdTmplt
 	}
 
 	return Cache, nil

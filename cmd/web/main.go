@@ -12,17 +12,26 @@ import (
 
 const portnum = ":8080"
 
-func main() {
+var app config.AppConfig
 
-	var app config.AppConfig
-	tc, err := render.CacheTemplate()
+func main() {
+	app.UseCache = false //because in development mode
+	///////////////////////////CACHING////////////////////////////
+	tc, err := render.CacheTemplate() //creating template cache
 	if err != nil {
 		log.Fatal("cannot create template cache")
 	}
-	app.TemplateCache = tc
+	app.TemplateCache = tc //giving just created cache to app config
 
-	render.NewTemplates(&app)
+	//////////////////RENDER//////////////////////////////////////
+	render.NewTemplates(&app) //giving app config to renders
 
-	http.HandleFunc("/", handlers.Home)
-	http.ListenAndServe(portnum, nil)
+	//////////////////WORK WITH HANDLERS AND REPO/////////////////
+	repo := handlers.NewRepo(&app) //making new repo
+	handlers.NewHandlers(repo)     //giving new just created repo to Handlers
+
+	http.HandleFunc("/", handlers.Repo.Home)
+	//////////////////////////////////////////////////////////////
+
+	http.ListenAndServe(portnum, nil) //running server
 }

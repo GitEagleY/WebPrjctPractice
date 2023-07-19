@@ -13,6 +13,8 @@ import (
 func routes(app *config.AppConfig) http.Handler {
 	mx := chi.NewRouter()
 	mx.Use(middleware.Recoverer)
+	mx.Use(WriteToConsole)
+	mx.Use(NoSurf)
 	mx.Get("/", handlers.Repo.Home)
 	return mx
 }

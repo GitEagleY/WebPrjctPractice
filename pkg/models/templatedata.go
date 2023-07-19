@@ -5,7 +5,7 @@ type TemplateData struct {
 	IntMap    map[string]int
 	FloatMap  map[string]float32
 	DataMap   map[string]interface{}
-	CSRFtoken string
+	CSRFtoken string //cross site request forgery token
 	Flash     string
 	Warnaing  string
 	Error     error

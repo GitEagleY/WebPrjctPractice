@@ -5,6 +5,7 @@ import (
 
 	render "github.com/GitEagleY/WebPrjctPractice/pkg/Render"
 	"github.com/GitEagleY/WebPrjctPractice/pkg/config"
+	"github.com/GitEagleY/WebPrjctPractice/pkg/models"
 )
 
 type Repository struct {
@@ -22,5 +23,9 @@ func NewHandlers(r *Repository) { //need for taking here repo to work with
 	Repo = r
 }
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, "home.page.tmpl")
+	stringMap := make(map[string]string)
+	stringMap["test"] = "hello"
+	render.RenderTemplate(w, "home.page.tmpl", &models.TemplateData{
+		StringMap: stringMap,
+	})
 }

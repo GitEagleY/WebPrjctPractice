@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	config "github.com/GitEagleY/WebPrjctPractice/pkg/config"
+	"github.com/GitEagleY/WebPrjctPractice/pkg/models"
 )
 
 //var functions = template.FuncMap{}
@@ -14,10 +15,13 @@ import (
 var app *config.AppConfig
 var templateCache map[string]*template.Template
 
+func AddDefaultData(td *models.TemplateData) *models.TemplateData { //default data avalivable to every template
+	return td
+}
 func NewTemplates(a *config.AppConfig) {
 	app = a
 }
-func RenderTemplate(w http.ResponseWriter, templateName string) error {
+func RenderTemplate(w http.ResponseWriter, templateName string, td *models.TemplateData) error {
 	if app.UseCache { //if not in developing mode use templates each time from cache
 		templateCache = app.TemplateCache
 	} else { //or if in development mode use from disk
@@ -29,9 +33,9 @@ func RenderTemplate(w http.ResponseWriter, templateName string) error {
 	if !ok {
 		log.Fatal(ok)
 	}
-
+	td = AddDefaultData(td) //adding deafult data availivable to every template
 	//render template
-	templateToRender.Execute(w, nil)
+	templateToRender.Execute(w, td)
 	return nil
 }
 func CacheTemplate() (map[string]*template.Template, error) {

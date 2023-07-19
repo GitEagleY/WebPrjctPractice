@@ -30,8 +30,15 @@ func main() {
 	repo := handlers.NewRepo(&app) //making new repo
 	handlers.NewHandlers(repo)     //giving new just created repo to Handlers
 
-	http.HandleFunc("/", handlers.Repo.Home)
+	//http.HandleFunc("/", handlers.Repo.Home)
 	//////////////////////////////////////////////////////////////
-
-	http.ListenAndServe(portnum, nil) //running server
+	srv := &http.Server{
+		Addr:    portnum,
+		Handler: routes(&app),
+	}
+	err = srv.ListenAndServe()
+	if err != nil {
+		log.Fatal(err)
+	}
+	//http.ListenAndServe(portnum, nil) //running server
 }

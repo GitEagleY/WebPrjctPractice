@@ -18,24 +18,23 @@ var templateCache map[string]*template.Template
 func AddDefaultData(td *models.TemplateData) *models.TemplateData { //default data avalivable to every template
 	return td
 }
-func NewTemplates(a *config.AppConfig) {
+func NewTemplates(a *config.AppConfig) { //template constructor
 	app = a
 }
 func RenderTemplate(w http.ResponseWriter, templateName string, td *models.TemplateData) error {
-	if app.UseCache { //if not in developing mode use templates each time from cache
+	if app.Production { //if not in developing mode use templates each time from cache
 		templateCache = app.TemplateCache
 	} else { //or if in development mode use from disk
 		templateCache, _ = CacheTemplate()
 	}
 
-	//make template to render
-	templateToRender, ok := templateCache[templateName]
+	templateToRender, ok := templateCache[templateName] //make template to render
 	if !ok {
 		log.Fatal(ok)
 	}
 	td = AddDefaultData(td) //adding deafult data availivable to every template
-	//render template
-	templateToRender.Execute(w, td)
+
+	templateToRender.Execute(w, td) //render template
 	return nil
 }
 func CacheTemplate() (map[string]*template.Template, error) {

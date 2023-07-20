@@ -9,7 +9,7 @@ import (
 // holds app config
 type AppConfig struct {
 	TemplateCache map[string]*template.Template
-	UseCache      bool //for developing mode
-	Production    bool
-	Session       *scs.SessionManager
+
+	Production bool //if yes ur in producton mode
+	Session    *scs.SessionManager
 }

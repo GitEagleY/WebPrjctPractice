@@ -1,11 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	render "github.com/GitEagleY/WebPrjctPractice/pkg/Render"
 	"github.com/GitEagleY/WebPrjctPractice/pkg/config"
+	"github.com/alexedwards/scs/v2"
 
 	handlers "github.com/GitEagleY/WebPrjctPractice/pkg/Handlers"
 )
@@ -13,9 +16,22 @@ import (
 const portnum = ":8080"
 
 var app config.AppConfig
+var session *scs.SessionManager
 
 func main() {
 	app.UseCache = false //because in development mode
+	app.Production = false
+	// /////////////////////SESSION////////////////////
+	session = scs.New()
+	session.Lifetime = 2 * time.Hour
+	session.Cookie.Persist = false
+	session.Cookie.SameSite = http.SameSiteLaxMode
+	session.Cookie.Secure = app.Production
+	//session.Cookie.Name="lol"
+	//session.Cookie.Path="/"
+	fmt.Println(session.Cookie)
+	app.Session = session
+
 	///////////////////////////CACHING////////////////////////////
 	tc, err := render.CacheTemplate() //creating template cache
 	if err != nil {

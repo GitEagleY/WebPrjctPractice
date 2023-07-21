@@ -20,10 +20,9 @@ Before running this application, make sure you have the following installed:
 
         cd WebPrjctPractice
 
-3. Build and run the application:
+3. Run the application:
 
-        go build
-       ./WebPrjctPractice
+       go run cmd/web/*.go
 
 Open your web browser and visit http://localhost:8080 to see the application in action.
 

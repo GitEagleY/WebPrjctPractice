@@ -14,16 +14,16 @@ Before running this application, make sure you have the following installed:
 
 1. Clone this repository to your local machine:
 
-       git clone https://github.com/GitEagleY/BasicWebApp.git
+       git clone https://github.com/GitEagleY/WebPrjctPractice.git
 
 2. Change into the project directory:
 
-        cd BasicWebApp
+        cd WebPrjctPractice
 
 3. Build and run the application:
 
         go build
-       ./BasicWebApp
+       ./WebPrjctPractice
 
 Open your web browser and visit http://localhost:8080 to see the application in action.
 
